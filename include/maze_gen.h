@@ -3,6 +3,6 @@
 
 #include "maze.h"
 
-void genMaze(int maze[][COLS], const struct Point startPos);
+void genMaze(struct Maze *maze, const struct Point startPos);
 
 #endif

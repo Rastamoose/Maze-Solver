@@ -3,8 +3,8 @@
 
 #include "utils.h"
 
-#define ROWS 19
-#define COLS 19
+#define MAZE_ROWS 19
+#define MAZE_COLS 19
 
 enum Tiles{
     EMPTY,
@@ -13,7 +13,7 @@ enum Tiles{
 };
 
 struct Maze{
-    int tiles[ROWS][COLS];
+    int tiles[MAZE_ROWS][MAZE_COLS];
     int tileWidth;
 };
 

@@ -26,8 +26,8 @@ static void updateNextPos(struct Robot *robot){
 int canMoveForward(struct Robot *robot, const struct Maze *maze){
     updateNextPos(robot);
     // bounds checking
-    if(robot->nextPos.x<0 || robot->nextPos.x>=COLS ||
-       robot->nextPos.y<0 || robot->nextPos.y>=ROWS){
+    if(robot->nextPos.x<0 || robot->nextPos.x>=MAZE_COLS ||
+       robot->nextPos.y<0 || robot->nextPos.y>=MAZE_ROWS){
         return 0;
        }
 

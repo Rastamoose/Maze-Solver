@@ -3,9 +3,16 @@
 #include "utils.h"
 
 void initMaze(struct Maze *maze, struct Point windowSize){
+    // fill maze with walls
+    for(int i=0;i<MAZE_ROWS;i++){
+        for(int j=0;j<MAZE_COLS;j++){
+            maze->tiles[i][j]=WALL;
+        }
+    }
+    
     // get width/height of tiles given grid size and window size (tiles are square)
-    int width = windowSize.x/COLS;
-    int height = windowSize.y/ROWS;
+    int width = windowSize.x/MAZE_COLS;
+    int height = windowSize.y/MAZE_ROWS;
  
     // we want to use the smaller side, so the full grid fits in the window
     maze->tileWidth = width<height ? width:height;
@@ -34,15 +41,15 @@ static void drawTile(struct Maze *maze, struct Point tileIndex){
 void drawMaze(struct Maze *maze){
     background();
 
-    for(int i=0;i<ROWS;i++){
+    for(int i=0;i<MAZE_ROWS;i++){
         // render the horizontal gridline for this row
         int rowYPos = maze->tileWidth*i;
-        drawLine(0,rowYPos,maze->tileWidth*COLS-1,rowYPos);   // -1 added to prevent line sticking out
-        for(int j=0;j<COLS;j++){
+        drawLine(0,rowYPos,maze->tileWidth*MAZE_COLS-1,rowYPos);   // -1 added to prevent line sticking out
+        for(int j=0;j<MAZE_COLS;j++){
             // render the vertical gridline for this col (but only on the first pass)
             if(i==0){
                 int colXPos = maze->tileWidth*j;
-                drawLine(colXPos,0,colXPos,maze->tileWidth*ROWS-1);
+                drawLine(colXPos,0,colXPos,maze->tileWidth*MAZE_ROWS-1);
             } 
             drawTile(maze,(struct Point){j,i});
         }
