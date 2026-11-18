@@ -41,6 +41,23 @@ static int getUnvisitedNeighbours(int visited[][MAZE_COLS], struct Point curr, s
     return count;
 }
 
+// the start point for maze generation should be one inwards of the entrance
+static struct Point getStartPos(struct Point entrance){
+    struct Point startPos = entrance;
+
+    if(entrance.x==0){
+        startPos.x++;
+    }else if(entrance.x==MAZE_COLS-1){
+        startPos.x--;
+    }else if(entrance.y==0){
+        startPos.y++;
+    }else{
+        startPos.y--;
+    }
+
+    return startPos;
+}
+
 // open an exit along the bottom or right edge of the maze
 static void openExit(struct Maze *maze){
     // num of options is one row + one col (minus the borders)
@@ -65,17 +82,26 @@ static void openExit(struct Maze *maze){
     maze->tiles[selected.y][selected.x]=EXIT;
 }
 
+static void visitTile(struct Maze *maze, int visited[][MAZE_COLS], struct Point active[MAZE_ROWS*MAZE_COLS], int *activeCount, struct Point curr, struct Point next){
+    // open that cell up, and the barrier between them
+    maze->tiles[next.y][next.x]=EMPTY;
+    maze->tiles[(curr.y+next.y)/2][(curr.x+next.x)/2] = EMPTY;
+    // now update visited and active
+    visited[next.y][next.x]=1;
+    active[(*activeCount)++]=next;
+}
+
 // using a growing tree algorithm. currently operates as recursive backtracker
 // chatgpt used to refine pseudocode/plans. NOT used to code method
-void genMaze(struct Maze *maze, struct Point startPos){
+void genMaze(struct Maze *maze, struct Point entrance){
     int visited[MAZE_ROWS][MAZE_COLS] = {0};
+    struct Point startPos = getStartPos(entrance);
     struct Point active[MAZE_ROWS*MAZE_COLS];
     int activeCount = 0;
     
+    // officially visit the starting point
     struct Point curr = startPos;
-    maze->tiles[curr.y][curr.x] = EMPTY;
-    visited[curr.y][curr.x] = 1;
-    active[activeCount++] = curr;
+    visitTile(maze, visited,active,&activeCount,curr,curr);
     struct Point neighbours[4];
 
     // while the active array is still populated
@@ -85,12 +111,7 @@ void genMaze(struct Maze *maze, struct Point startPos){
         // pick a random neighbour to be the next cell
         if(count>0){
             struct Point next = neighbours[rand()%count];
-            // open that cell up, and the barrier between them
-            maze->tiles[next.y][next.x]=EMPTY;
-            maze->tiles[(curr.y+next.y)/2][(curr.x+next.x)/2] = EMPTY;
-            // now update visited and active
-            visited[next.y][next.x]=1;
-            active[activeCount++]=next;
+            visitTile(maze, visited,active,&activeCount,curr,next);
         // if there are no neighbours then go to the previous active cell
         }else{
             activeCount--;
@@ -98,6 +119,6 @@ void genMaze(struct Maze *maze, struct Point startPos){
     }
 
     // open up start point
-    maze->tiles[startPos.y][startPos.x] = EMPTY;
+    maze->tiles[entrance.y][entrance.x] = EMPTY;
     openExit(maze);
 }

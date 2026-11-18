@@ -14,7 +14,7 @@ enum Tiles{
 
 struct Maze{
     int tiles[MAZE_ROWS][MAZE_COLS];
-    int tileWidth;
+    int tileLength;
 };
 
 void initMaze(struct Maze *maze, struct Point windowSize);

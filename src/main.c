@@ -48,8 +48,8 @@ int main(void){
     struct Robot robot = {.pos={0,1}, .facing=EAST};
 
     initMaze(&maze, (struct Point){WIDTH,HEIGHT});
-    // start maze generation top left non border square
-    genMaze(&maze, (struct Point){1,1});
+    // keep entrance to maze as robots initial position for simplicity, can be changed
+    genMaze(&maze, robot.pos);
     drawMaze(&maze);
 
     foreground();

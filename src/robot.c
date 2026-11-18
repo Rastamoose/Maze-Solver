@@ -25,7 +25,8 @@ static struct Point getNextPos(const struct Robot *robot){
 
 int canMoveForward(const struct Robot *robot, const struct Maze *maze){
     struct Point nextPos = getNextPos(robot);
-    // bounds checking
+
+    // if a boundary is in front, then it can't move forward
     if(nextPos.x<0 || nextPos.x>=MAZE_COLS ||
        nextPos.y<0 || nextPos.y>=MAZE_ROWS){
         return 0;
@@ -46,11 +47,11 @@ void forward(struct Robot *robot, const struct Maze *maze){
 // robot direction is an enum so we can +1 or -1 to change direction, staying within range 0-3
 void left(struct Robot *robot){
     // +3 instead of -1 to avoid negative numbers
-    robot->facing = ((robot->facing)+3)%4;
+    robot->facing = (robot->facing+3)%4;
 }
 
 void right(struct Robot *robot){
-    robot->facing = ((robot->facing)+1)%4;
+    robot->facing = (robot->facing+1)%4;
 }
 
 int atMarker(const struct Robot *robot, const struct Maze *maze){
@@ -64,8 +65,8 @@ void drawRobot(const struct Robot *robot, const struct Maze *maze){
     
     // compute window position for each vertex based on robot pos + relative offset 
     for(int i=0;i<VERTICES;i++){
-        xCoords[i] = (robot->pos.x+tris[robot->facing][i].x)*(maze->tileWidth);
-        yCoords[i] = (robot->pos.y+tris[robot->facing][i].y)*(maze->tileWidth);
+        xCoords[i] = (robot->pos.x+tris[robot->facing][i].x)*(maze->tileLength);
+        yCoords[i] = (robot->pos.y+tris[robot->facing][i].y)*(maze->tileLength);
     }
 
     fillPolygon(VERTICES,xCoords,yCoords);
