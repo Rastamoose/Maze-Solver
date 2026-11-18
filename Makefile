@@ -8,7 +8,7 @@ GRAPHICS_DIR := drawapp
 SOURCES := $(shell find $(SRC_DIR) $(GRAPHICS_DIR) -type f -name '*.c') 
 OBJECTS := $(addprefix $(OBJ_DIR)/,$(SOURCES:.c=.o))
 
-CFLAGS := -m64 -g -Wall -MMD -MP
+CFLAGS := -g -Wall -Wextra -MMD -MP 
 
 .PHONY: all clean
 

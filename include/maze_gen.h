@@ -3,6 +3,7 @@
 
 #include "maze.h"
 
-void genMaze(struct Maze *maze, const struct Point startPos);
+// expects maze to be filled with walls
+void genMaze(struct Maze *maze, struct Point startPos);
 
 #endif

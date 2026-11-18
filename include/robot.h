@@ -4,6 +4,8 @@
 #include "utils.h"
 #include "maze.h"
 
+#define VERTICES 3
+
 enum Direction{
     NORTH,
     EAST,
@@ -13,11 +15,10 @@ enum Direction{
 
 struct Robot{
     struct Point pos;
-    struct Point nextPos;
     enum Direction facing;
 };
 
-int canMoveForward(struct Robot *robot, const struct Maze *maze);
+int canMoveForward(const struct Robot *robot, const struct Maze *maze);
 
 // CONTROL METHODS
 void forward(struct Robot *robot, const struct Maze *maze);

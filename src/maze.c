@@ -18,7 +18,7 @@ void initMaze(struct Maze *maze, struct Point windowSize){
     maze->tileWidth = width<height ? width:height;
 }
 
-static void drawTile(struct Maze *maze, struct Point tileIndex){
+static void drawTile(const struct Maze *maze, struct Point tileIndex){
     int tileVal = maze->tiles[tileIndex.y][tileIndex.x];
     // real window position of tile
     struct Point realPos = {maze->tileWidth*tileIndex.x,maze->tileWidth*tileIndex.y};
@@ -38,22 +38,20 @@ static void drawTile(struct Maze *maze, struct Point tileIndex){
     setColour(black);
 }
 
-void drawMaze(struct Maze *maze){
+void drawMaze(const struct Maze *maze){
     background();
 
-    for(int i=0;i<MAZE_ROWS;i++){
+    for(int row=0;row<MAZE_ROWS;row++){
         // render the horizontal gridline for this row
-        int rowYPos = maze->tileWidth*i;
+        int rowYPos = maze->tileWidth*row;
         drawLine(0,rowYPos,maze->tileWidth*MAZE_COLS-1,rowYPos);   // -1 added to prevent line sticking out
-        for(int j=0;j<MAZE_COLS;j++){
+        for(int col=0;col<MAZE_COLS;col++){
             // render the vertical gridline for this col (but only on the first pass)
-            if(i==0){
-                int colXPos = maze->tileWidth*j;
+            if(row==0){
+                int colXPos = maze->tileWidth*col;
                 drawLine(colXPos,0,colXPos,maze->tileWidth*MAZE_ROWS-1);
             } 
-            drawTile(maze,(struct Point){j,i});
+            drawTile(maze,(struct Point){col,row});
         }
-    }
-    
-    foreground();
+    }   
 }

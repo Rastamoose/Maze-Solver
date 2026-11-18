@@ -18,6 +18,6 @@ struct Maze{
 };
 
 void initMaze(struct Maze *maze, struct Point windowSize);
-void drawMaze(struct Maze *maze);
+void drawMaze(const struct Maze *maze);
 
 #endif

@@ -42,22 +42,22 @@ static int getUnvisitedNeighbours(int visited[][MAZE_COLS], struct Point curr, s
 }
 
 // open an exit along the bottom or right edge of the maze
-void openExit(struct Maze *maze){
+static void openExit(struct Maze *maze){
     // num of options is one row + one col (minus the borders)
     struct Point options[(MAZE_ROWS-2)+(MAZE_COLS-2)];
     int count = 0;
     // get bottom edge
-    for(int i=0;i<(MAZE_COLS-1);i++){
-        if(maze->tiles[MAZE_ROWS-2][i]==EMPTY){
+    for(int col=1;col<(MAZE_COLS-1);col++){
+        if(maze->tiles[MAZE_ROWS-2][col]==EMPTY){
             // the actual option will be on the border so -1 instead of -2
-            options[count++] = (struct Point){i,MAZE_ROWS-1};
+            options[count++] = (struct Point){col,MAZE_ROWS-1};
         }
     }
 
     // get right edge
-    for(int i=0;i<(MAZE_ROWS-1);i++){
-        if(maze->tiles[i][MAZE_COLS-2]==EMPTY){
-            options[count++] = (struct Point){MAZE_COLS-1,i};
+    for(int row=1;row<(MAZE_ROWS-1);row++){
+        if(maze->tiles[row][MAZE_COLS-2]==EMPTY){
+            options[count++] = (struct Point){MAZE_COLS-1,row};
         }
     }
 
@@ -67,7 +67,7 @@ void openExit(struct Maze *maze){
 
 // using a growing tree algorithm. currently operates as recursive backtracker
 // chatgpt used to refine pseudocode/plans. NOT used to code method
-void genMaze(struct Maze *maze, const struct Point startPos){
+void genMaze(struct Maze *maze, struct Point startPos){
     int visited[MAZE_ROWS][MAZE_COLS] = {0};
     struct Point active[MAZE_ROWS*MAZE_COLS];
     int activeCount = 0;
@@ -98,6 +98,6 @@ void genMaze(struct Maze *maze, const struct Point startPos){
     }
 
     // open up start point
-    maze->tiles[1][0] = EMPTY;
+    maze->tiles[startPos.y][startPos.x] = EMPTY;
     openExit(maze);
 }
