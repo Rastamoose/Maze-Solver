@@ -8,10 +8,12 @@
 
 struct Maze{
     int tiles[ROWS][COLS];
+    int tileWidth;
 };
 
-int getTileSize(struct Point windowSize);
-void drawTile(int tileVal, struct Point pos, int tileWidth);
-void drawMaze(const struct Maze *maze, struct Point windowSize);
+void initMaze(struct Maze *maze, struct Point windowSize);
+
+void drawTile(struct Maze *maze, struct Point tileIndex);
+void drawMaze(struct Maze *maze);
 
 #endif

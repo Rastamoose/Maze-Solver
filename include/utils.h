@@ -7,4 +7,9 @@ struct Point{
     int y;
 };
 
+struct Pointf{
+    double x;
+    double y;
+};
+
 #endif

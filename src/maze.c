@@ -2,16 +2,20 @@
 #include "graphics.h"
 #include "utils.h"
 
-// return width/height of tiles given grid size and window size (tiles are square)
-int getTileSize(struct Point windowSize){
+void initMaze(struct Maze *maze, struct Point windowSize){
+    // get width/height of tiles given grid size and window size (tiles are square)
     int width = windowSize.x/COLS;
     int height = windowSize.y/ROWS;
  
-    // we want to return the smaller side, so the full grid fits in the window
-    return width<height ? width:height;
+    // we want to use the smaller side, so the full grid fits in the window
+    maze->tileWidth = width<height ? width:height;
 }
 
-void drawTile(int tileVal, struct Point pos, int tileWidth){
+void drawTile(struct Maze *maze, struct Point tileIndex){
+    int tileVal = maze->tiles[tileIndex.y][tileIndex.x];
+    // real window position of tile
+    struct Point realPos = {maze->tileWidth*tileIndex.x,maze->tileWidth*tileIndex.y};
+
     switch (tileVal){
         case 0:
             // if empty tile we'll just skip rendering
@@ -23,25 +27,26 @@ void drawTile(int tileVal, struct Point pos, int tileWidth){
             setColour(green);
     }
 
-    fillRect(pos.x,pos.y,tileWidth,tileWidth);
+    fillRect(realPos.x,realPos.y,maze->tileWidth,maze->tileWidth);
     setColour(black);
 }
 
-void drawMaze(const struct Maze *maze, struct Point windowSize){
+void drawMaze(struct Maze *maze){
     background();
-    int tileWidth = getTileSize(windowSize);
 
     for(int i=0;i<ROWS;i++){
         // render the horizontal gridline for this row
-        int rowYPos = tileWidth*i;
-        drawLine(0,rowYPos,tileWidth*COLS-1,rowYPos);   // -1 added to prevent line sticking out
+        int rowYPos = maze->tileWidth*i;
+        drawLine(0,rowYPos,maze->tileWidth*COLS-1,rowYPos);   // -1 added to prevent line sticking out
         for(int j=0;j<COLS;j++){
-            // render the vertical gridline for this col
-            int colXPos = tileWidth*j;
-            drawLine(colXPos,0,colXPos,tileWidth*ROWS-1);
-
-            struct Point pos = {tileWidth*j,tileWidth*i};
-            drawTile(maze->tiles[i][j],pos,tileWidth);
+            // render the vertical gridline for this col (but only on the first pass)
+            if(i==0){
+                int colXPos = maze->tileWidth*j;
+                drawLine(colXPos,0,colXPos,maze->tileWidth*ROWS-1);
+            } 
+            drawTile(maze,(struct Point){i,j});
         }
     }
+    
+    foreground();
 }

@@ -8,6 +8,7 @@
 #define HEIGHT 360
 
 
+
 int main(void){
     setWindowSize(WIDTH,HEIGHT);
     struct Maze maze = {
@@ -32,7 +33,20 @@ int main(void){
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1}
         }
     };
+    struct Robot robot = {.pos={0,1}, .facing=EAST};
 
-    drawMaze(&maze, (struct Point){WIDTH,HEIGHT});
+    
+    initMaze(&maze, (struct Point){WIDTH,HEIGHT});
+    drawMaze(&maze);
+    foreground();
+    setColour(green);
+
+
+    while(true){
+        drawRobot(&robot,&maze);
+        right(&robot);
+        sleep(1000);
+        clear();
+    }
     return 0;
 }
