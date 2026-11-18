@@ -3,7 +3,6 @@
 
 #include "utils.h"
 #include "maze.h"
-#include "graphics.h"
 
 enum Direction{
     NORTH,
@@ -18,14 +17,13 @@ struct Robot{
     enum Direction facing;
 };
 
-void updateNextPos(struct Robot *robot);
 int canMoveForward(struct Robot *robot, const struct Maze *maze);
 
 // CONTROL METHODS
 void forward(struct Robot *robot, const struct Maze *maze);
 void left(struct Robot *robot);
 void right(struct Robot *robot);
-int atMarker(struct Robot *robot, const struct Maze *maze);
+int atMarker(const struct Robot *robot, const struct Maze *maze);
 
 void drawRobot(const struct Robot *robot, const struct Maze *maze);
 

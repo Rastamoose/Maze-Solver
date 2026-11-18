@@ -3,8 +3,14 @@
 
 #include "utils.h"
 
-#define ROWS 18
-#define COLS 18
+#define ROWS 19
+#define COLS 19
+
+enum Tiles{
+    EMPTY,
+    WALL,
+    EXIT
+};
 
 struct Maze{
     int tiles[ROWS][COLS];
@@ -12,8 +18,6 @@ struct Maze{
 };
 
 void initMaze(struct Maze *maze, struct Point windowSize);
-
-void drawTile(struct Maze *maze, struct Point tileIndex);
 void drawMaze(struct Maze *maze);
 
 #endif

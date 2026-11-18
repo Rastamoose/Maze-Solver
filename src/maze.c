@@ -11,19 +11,19 @@ void initMaze(struct Maze *maze, struct Point windowSize){
     maze->tileWidth = width<height ? width:height;
 }
 
-void drawTile(struct Maze *maze, struct Point tileIndex){
+static void drawTile(struct Maze *maze, struct Point tileIndex){
     int tileVal = maze->tiles[tileIndex.y][tileIndex.x];
     // real window position of tile
     struct Point realPos = {maze->tileWidth*tileIndex.x,maze->tileWidth*tileIndex.y};
 
     switch (tileVal){
-        case 0:
+        case EMPTY:
             // if empty tile we'll just skip rendering
             return;
-        case 1:
+        case WALL:
             setColour(black);
             break;
-        case 2:
+        case EXIT:
             setColour(green);
     }
 
@@ -44,7 +44,7 @@ void drawMaze(struct Maze *maze){
                 int colXPos = maze->tileWidth*j;
                 drawLine(colXPos,0,colXPos,maze->tileWidth*ROWS-1);
             } 
-            drawTile(maze,(struct Point){i,j});
+            drawTile(maze,(struct Point){j,i});
         }
     }
     
